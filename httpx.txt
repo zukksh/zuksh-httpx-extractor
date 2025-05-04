@@ -1,0 +1,9 @@
+# Configuration file for Zuksh's HTTPX Status Code Extractor
+# Number of concurrent threads
+THREADS=200
+
+# Timeout for each request (in seconds)
+TIMEOUT=15
+
+# Number of retries for failed requests
+RETRIES=3
