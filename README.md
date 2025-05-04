@@ -32,7 +32,7 @@ A powerful Bash script crafted by **Zuksh** to extract domains with specific HTT
 
 3. **Clone the Repository**:
    ```bash
-   git clone https://github.com/<your-username>/zuksh-httpx-extractor.git
+   git clone https://github.com/zeyadR3/zuksh-httpx-extractor
    cd zuksh-httpx-extractor
    ```
 
