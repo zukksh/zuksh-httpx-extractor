@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Zuksh's Advanced HTTPX Status Code Extractor
-# Function to display banner
+
 function show_banner() {
     echo "========================================="
     echo "    Zuksh's HTTPX Status Code Extractor"
@@ -13,7 +12,7 @@ function show_banner() {
     echo
 }
 
-# Function to check if a command exists
+
 function check_command() {
     if ! command -v "$1" &> /dev/null; then
         echo "Error: $1 is not installed. Please install it."
@@ -22,7 +21,7 @@ function check_command() {
     fi
 }
 
-# Function to display usage
+
 function show_usage() {
     echo "Usage: $0 <domains_file> [-o <output_format>] [-c <config_file>]"
     echo "  <domains_file>: Text file with one domain per line"
@@ -32,7 +31,7 @@ function show_usage() {
     exit 1
 }
 
-# Default settings
+
 OUTPUT_FORMAT="txt"
 CONFIG_FILE=""
 THREADS=100
@@ -40,7 +39,7 @@ TIMEOUT=10
 RETRIES=2
 STATUS_CODES=("200" "301" "403" "404")
 
-# Parse command-line arguments
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -o)
@@ -71,7 +70,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Validate domains file
+
 if [ -z "$DOMAINS_FILE" ]; then
     echo "Error: No domains file provided!"
     show_usage
@@ -82,44 +81,44 @@ if [ ! -f "$DOMAINS_FILE" ]; then
     exit 1
 fi
 
-# Check for httpx
+
 check_command httpx
 
-# Load config file if provided
+
 if [ -n "$CONFIG_FILE" ]; then
     echo "Loading configuration from $CONFIG_FILE..."
     source "$CONFIG_FILE"
 fi
 
-# Create output directory
+
 OUTPUT_DIR="zuksh_httpx_results_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$OUTPUT_DIR"
 ERROR_LOG="$OUTPUT_DIR/error.log"
 
-# Count total domains for progress
+
 TOTAL_DOMAINS=$(wc -l < "$DOMAINS_FILE")
 echo "Total domains to process: $TOTAL_DOMAINS"
 
-# Initialize httpx base command
+
 HTTPX_BASE="httpx -l $DOMAINS_FILE -threads $THREADS -timeout $TIMEOUT -retries $RETRIES -silent"
 
-# Add output-specific flags
+
 if [ "$OUTPUT_FORMAT" = "json" ]; then
     HTTPX_BASE="$HTTPX_BASE -json"
 fi
 
-# Add metadata flags
+
 HTTPX_BASE="$HTTPX_BASE -title -tech-detect -status-code"
 
-# Process each status code
+
 for STATUS in "${STATUS_CODES[@]}"; do
     echo "Processing status code $STATUS..."
     OUTPUT_FILE="$OUTPUT_DIR/domains_${STATUS}.${OUTPUT_FORMAT}"
 
-    # Run httpx with match-code filter
+    
     $HTTPX_BASE -mc "$STATUS" -o "$OUTPUT_FILE" 2>>"$ERROR_LOG"
 
-    # Check if output file exists and has content
+    
     if [ -s "$OUTPUT_FILE" ]; then
         echo "Results saved to $OUTPUT_FILE"
         if [ "$OUTPUT_FORMAT" = "txt" ]; then
@@ -134,7 +133,7 @@ for STATUS in "${STATUS_CODES[@]}"; do
     fi
 done
 
-# Generate summary report
+
 SUMMARY_FILE="$OUTPUT_DIR/summary.txt"
 echo "Generating summary report..."
 cat << EOF > "$SUMMARY_FILE"
