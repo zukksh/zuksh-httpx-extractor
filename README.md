@@ -21,7 +21,7 @@ A powerful Bash script crafted by **Zuksh** to extract domains with specific HTT
 ## Installation
 1. **Install httpx**:
    ```bash
-   go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+   go install -v https://github.com/zukksh/zuksh-httpx-extractor
    ```
    Ensure `$GOPATH/bin` is in your `$PATH`.
 
